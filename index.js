@@ -7,7 +7,7 @@ const request = require('request-promise').defaults({ // eslint-disable-line
     transform: (body, response, resolveWithFullResponse) => response.statusCode === 302 ? body : (resolveWithFullResponse ? response : body), // eslint-disable-line
     simple: false,
 });
-const cheerio = require('cheerio'); // eslint-disable-line
+const cheerio = require('cheerio');
 
 module.exports = class OMK {
     constructor() {
