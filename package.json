@@ -1,7 +1,10 @@
 {
-  "name": "omkapi",
+  "name": "omk",
   "version": "1.0.0",
+  "description": "Oma matkakortti unofficial API",
   "main": "index.js",
+  "repository": "https://github.com/jolle/omk",
+  "author": "jolle <jolle@users.noreply.github.com>",
   "license": "MIT",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
