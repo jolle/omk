@@ -2,8 +2,8 @@
     <b>🚌 Oma matkakortti (OMK) API</b>
 </p>
 <p align="center">
-    <a href="https://travis-ci.org/jolle/omk"><img src="https://travis-ci.org/jolle/omk.svg?branch=master" alt="Build Status"></a>
-    [![NPM](https://nodei.co/npm/omk.png?downloads=true&stars=true](https://npmjs.org/package/omk)
+    <a href="https://travis-ci.org/jolle/omk"><img src="https://travis-ci.org/jolle/omk.svg?branch=master" alt="Build Status"></a><br/>
+    <a href="https://npmjs.org/package/omk"><img src="https://nodei.co/npm/omk.png?downloads=true&stars=true" alt="NPM"></a>
 </p>
 <p align="center">
     <sup><b>Unofficial</b> oma matkakortti API for Node.js</sup>
