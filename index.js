@@ -1,16 +1,15 @@
-const url = require('url');
-const request = require('request-promise').defaults({
+const request = require('request-promise').defaults({ // eslint-disable-line
     headers: {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:51.0) Gecko/20100101 Firefox/51.0',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+        Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
     },
     jar: true,
-    transform: (body, response, resolveWithFullResponse) => response.statusCode === 302 ? body : (resolveWithFullResponse ? response : body),
+    transform: (body, response, resolveWithFullResponse) => response.statusCode === 302 ? body : (resolveWithFullResponse ? response : body), // eslint-disable-line
     simple: false,
 });
-const cheerio = require('cheerio');
+const cheerio = require('cheerio'); // eslint-disable-line
 
-module.exports = class OMKAPI {
+module.exports = class OMK {
     constructor() {
         this.cards = [];
     }
@@ -24,20 +23,19 @@ module.exports = class OMKAPI {
      */
     login(username, password) {
         return request.get('https://omamatkakortti.hsl.fi/')
-            //.then(() => request.get('https://omamatkakortti.hsl.fi/Account/Login'))
-            .then((body) => cheerio.load(body))
-            .then(($) => $('[name="__RequestVerificationToken"]').val())
-            .then((__RequestVerificationToken) => request({
+            .then(body => cheerio.load(body))
+            .then($ => $('[name="__RequestVerificationToken"]').val())
+            .then(__RequestVerificationToken => request({
                 uri: 'https://omamatkakortti.hsl.fi/',
                 method: 'POST',
                 form: {
                     __RequestVerificationToken,
                     UserName: username,
                     Password: password,
-                    LoginButton: 'Kirjaudu'
+                    LoginButton: 'Kirjaudu',
                 },
                 headers: {
-                    'Referer': 'https://omamatkakortti.hsl.fi/Account/Login'
+                    Referer: 'https://omamatkakortti.hsl.fi/Account/Login',
                 },
             }));
     }
@@ -50,8 +48,9 @@ module.exports = class OMKAPI {
      */
     getCards() {
         if (this.cards.length > 0) return Promise.resolve(this.cards);
-        else return request.get('https://omamatkakortti.hsl.fi/Shop').then((body) => {
-            return this.cards = JSON.parse(body.match(/ETUILE\.CARD_DETAILS = ETUILE\.dotnet\.parseJSON\('(.*)'\);/)[1]);
+        return request.get('https://omamatkakortti.hsl.fi/Shop').then((body) => {
+            this.cards = JSON.parse(body.match(/ETUILE\.CARD_DETAILS = ETUILE\.dotnet\.parseJSON\('(.*)'\);/)[1]);
+            return this.cards;
         });
     }
 
@@ -73,30 +72,47 @@ module.exports = class OMKAPI {
             },
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
-                'Referer': 'https://omamatkakortti.hsl.fi/Cards',
-                'Accept': 'application/json, text/javascript, */*; q=0.01',
+                Referer: 'https://omamatkakortti.hsl.fi/Cards',
+                Accept: 'application/json, text/javascript, */*; q=0.01',
                 'Content-Type': 'application/json; charset=utf-8',
-            }
-        })
-        .then(() => request.get(`https://omamatkakortti.hsl.fi/Cards/CardInfo?CardNumber=${id}&_=${Date.now()}`, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Referer': 'https://omamatkakortti.hsl.fi/Cards',
-                'Accept': 'text/html, */*; q=0.01',
             },
-        }))
-        .then((body) => cheerio.load(body))
-        .then(($) => {
-            const rawSeason = $('label[for="PeriodOnCard"]').closest('tr').find('td').last().find('p').first().text().trim().split('\n').map(a => a.trim()).join('\n');
+        })
+            .then(() => request.get(`https://omamatkakortti.hsl.fi/Cards/CardInfo?CardNumber=${id}&_=${Date.now()}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    Referer: 'https://omamatkakortti.hsl.fi/Cards',
+                    Accept: 'text/html, */*; q=0.01',
+                },
+            }))
+            .then(body => cheerio.load(body))
+            .then(($) => {
+                const rawSeason = $('label[for="PeriodOnCard"]')
+                    .closest('tr')
+                    .find('td')
+                    .last()
+                    .find('p')
+                    .first()
+                    .text()
+                    .trim()
+                    .split('\n')
+                    .map(a => a.trim())
+                    .join('\n');
 
-            return {
-                balance: $('label[for="Balance"]').closest('tr').find('td.cards_info_row_gap').last().text().trim(),
-                name: $('#cardName').val().trim(),
-                rawSeason,
-                season: this.parseSeason(rawSeason),
-                id,
-            };
-        });
+                return {
+                    balance: $('label[for="Balance"]')
+                        .closest('tr')
+                        .find('td.cards_info_row_gap')
+                        .last()
+                        .text()
+                        .trim(),
+                    name: $('#cardName')
+                        .val()
+                        .trim(),
+                    rawSeason,
+                    season: this.parseSeason(rawSeason),
+                    id,
+                };
+            });
     }
 
     parseSeason(season) {
@@ -105,11 +121,11 @@ module.exports = class OMKAPI {
 
         const users = {
             'lapsi (7-16v)': 'child (7-16yr)',
-            'aikuinen': 'adult',
+            aikuinen: 'adult',
         };
 
         const areas = {
-            'seutu': 'regional',
+            seutu: 'regional',
             'lähiseutu 2': 'region two-zone',
             'lähiseutu 3': 'region three-zone',
         };
@@ -124,4 +140,4 @@ module.exports = class OMKAPI {
             end: matches[4],
         });
     }
-}
+};
