@@ -3,6 +3,7 @@
 </p>
 <p align="center">
     <a href="https://travis-ci.org/jolle/omk"><img src="https://travis-ci.org/jolle/omk.svg?branch=master" alt="Build Status"></a>
+    [![NPM](https://nodei.co/npm/omk.png?downloads=true&stars=true](https://npmjs.org/package/omk)
 </p>
 <p align="center">
     <sup><b>Unofficial</b> oma matkakortti API for Node.js</sup>
