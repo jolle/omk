@@ -53,7 +53,7 @@ Logs the user in with an username and a password. Resolves on successful login.
 
 ### getCards() ⇒ <code>Promise&lt;Array&lt;Object&gt;&gt;</code>
 
-Fetches all the cards of the user and caches them for next time.
+Fetches all the cards of the user.
 
 **Note**: Even though the array has objects with lots of information, only `id` and `name` are accurate; others are bogus.
 

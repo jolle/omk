@@ -10,10 +10,6 @@ const request = require('request-promise').defaults({ // eslint-disable-line
 const cheerio = require('cheerio');
 
 module.exports = class OMK {
-    constructor() {
-        this.cards = [];
-    }
-
     /**
      * login - logs the user in with an username and a password
      *
@@ -47,11 +43,7 @@ module.exports = class OMK {
      * @return {Promise<Array<Object>>}  resolves with an array of objects of cards
      */
     getCards() {
-        if (this.cards.length > 0) return Promise.resolve(this.cards);
-        return request.get('https://omamatkakortti.hsl.fi/Shop').then((body) => {
-            this.cards = JSON.parse(body.match(/ETUILE\.CARD_DETAILS = ETUILE\.dotnet\.parseJSON\('(.*)'\);/)[1]);
-            return this.cards;
-        });
+        return request.get('https://omamatkakortti.hsl.fi/Shop').then(body => JSON.parse(body.match(/ETUILE\.CARD_DETAILS = ETUILE\.dotnet\.parseJSON\('(.*)'\);/)[1]));
     }
 
 
