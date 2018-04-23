@@ -128,8 +128,14 @@ module.exports = class OMK {
             season: true,
             user: users[matches[1].toLowerCase()] || matches[1].toLowerCase(),
             area: areas[matches[2].toLowerCase()] || matches[2].toLowerCase(),
-            start: matches[3],
-            end: matches[4],
+            start: this.makeDate(matches[3]),
+            end: this.makeDate(matches[4]),
         });
+    }
+
+    makeDate(date) {
+        const [day, month, year] = date.split('.');
+
+        return new Date(Date.UTC(year, month - 1, day, 0, 0, 0));
     }
 };
